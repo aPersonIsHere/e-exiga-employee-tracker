@@ -136,19 +136,24 @@ function addEmployee() {
         },
         {
             type: 'input',
-            message: 'What is the manager role that this employee is categorized under? (Use the ID.)',
+            message: 'What is the manager role that this employee is categorized under? (Use the ID. If none, leave completely blank.)',
             name: 'employeeManager'
         }
         ])
         .then((responses) => {
             console.log('\n');
-            if(responses.employeeFirstName.trim() == '' || responses.employeeLastName.trim() == '' || responses.employeeRole == '' || responses.employeeManager == '') {
+            if(responses.employeeFirstName.trim() == '' || responses.employeeLastName.trim() == '' || responses.employeeRole == '') {
                 console.log('A field is missing. Try again.');
                 init();
             } else {
-                db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${responses.employeeFirstName.trim()}', '${responses.employeeLastName.trim()}', '${responses.employeeRole}', '${responses.employeeManager}')`)
+                if (responses.employeeManager == '') {
+                    var manager = "NULL";
+                } else {
+                    var manager = `'${responses.employeeManager}'`;
+                }
+                db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${responses.employeeFirstName.trim()}', '${responses.employeeLastName.trim()}', '${responses.employeeRole}', ${manager})`)
                 .then( ([rows, fields]) => {
-                    console.log(`\nAddition of employee ${responses.employeeFirstName.trim()} ${responses.employeeLastName.trim()} in ${responses.employeeRole.trim()} under manager ${responses.employeeManager}!`);
+                    console.log(`\nAddition of employee ${responses.employeeFirstName.trim()} ${responses.employeeLastName.trim()} in ${responses.employeeRole.trim()} under manager ${manager}!`);
                 })
                 .catch(console.log)
                 .then( () => {
@@ -177,7 +182,7 @@ function updateEmployeeRole() {
                 console.log('A field is missing. Try again.');
                 init();
             } else {
-                db.promise().query(`UPDATE employee SET rold_id = '${responses.newRoleID.trim()}' WHERE id = ${responses.employeeID.trim()}`)
+                db.promise().query(`UPDATE employee SET role_id = '${responses.newRoleID.trim()}' WHERE id = ${responses.employeeID.trim()}`)
                 .then( ([rows, fields]) => {
                     console.log(`\nUpdating of ID ${responses.employeeID.trim()} employee\'s role to role of ID ${responses.newRoleID.trim()}!`);
                 })

@@ -9,6 +9,8 @@ The Employee Tracker can track departments, roles, and employees for a company. 
 A Demo Image of the Console:
 ![image](https://github.com/aPersonIsHere/e-exiga-employee-tracker/assets/33707404/afe7e0d6-c29f-4c64-af3a-1d98ce4911c5)
 
+A YouTube Demo of the Console:
+https://youtu.be/xIEFhyrUA1w
 
 ## Table of Contents
 - [Installation](#installation)
